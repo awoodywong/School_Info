@@ -19,7 +19,7 @@ import java.net.URL;
 public class JsonHandlerThread extends Thread {
     private static final String TAG = "JsonHandlerThread";
     // URL to get contacts JSON file
-    private static String jsonUrl = "https://storage.googleapis.com/school_list/SCH_LOC_EDB.json";
+    private static String jsonUrl = "https://storage.googleapis.com/school_list/SCH_LOC_EDB2.json";
 
     public static String makeRequest() {
         String response = null;
@@ -81,28 +81,41 @@ public class JsonHandlerThread extends Thread {
 
                     String schoolNo = c.getString("A");
                     String engCategory = c.getString("B");
+                    String chiCategory = c.getString("C");
                     String engName = c.getString("D");
+                    String chiName = c.getString("E");
                     String engAddress = c.getString("F");
+                    String chiAddress = c.getString("G");
                     String longtitude = c.getString("H");
                     String latitude = c.getString("J");
                     String easting = c.getString("L");
                     String northing = c.getString("N");
                     String stdGender = c.getString("P");
+                    String chiStdGender = c.getString("Q");
                     String session = c.getString("R");
+                    String chiSession = c.getString("S");
                     String district = c.getString("T");
+                    String chiDistrict = c.getString("U");
                     String finType = c.getString("V");
+                    String chiFinType = c.getString("W");
                     String schoolLv = c.getString("X");
-                    String telephone= c.getString("Z");
+                    String chiSchoolLv = c.getString("Y");
+                    String telephone = c.getString("Z");
+                    String chiTelephone = c.getString("AA");
                     String faxNo = c.getString("AB");
+                    String chiFaxNo = c.getString("AC");
                     String website = c.getString("AD");
-                    String religion= c.getString("AF");
+                    String chiWebsite = c.getString("AE");
+                    String religion = c.getString("AF");
+                    String chiReligion = c.getString("AG");
 
 
 
                     // Add contact (name, email, address) to contact list
-                    SchoolInfo.addSchool(schoolNo, engCategory, engName, engAddress, longtitude, latitude,
-                            easting, northing, stdGender, session, district, finType, schoolLv, telephone,
-                            faxNo, website, religion);
+                    SchoolInfo.addSchool(schoolNo, engCategory,chiCategory, engName,chiName, engAddress, chiAddress,
+                            longtitude, latitude, easting, northing, stdGender, chiStdGender, session, chiSession,
+                            district, chiDistrict, finType, chiFinType, schoolLv, chiSchoolLv, telephone, chiTelephone,
+                            faxNo, chiFaxNo, website, chiWebsite, religion, chiReligion);
                 }
             } catch (final JSONException e) {
                 Log.e(TAG, "Json parsing error: " + e.getMessage());
