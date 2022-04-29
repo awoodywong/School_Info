@@ -8,14 +8,19 @@ import android.renderscript.ScriptGroup;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 public class WebViewActivity extends AppCompatActivity {
     private WebView webview;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
+
+        getSupportActionBar().setTitle("Website");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         webview = findViewById(R.id.webview);
 
