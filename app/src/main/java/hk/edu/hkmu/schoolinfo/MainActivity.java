@@ -2,13 +2,18 @@ package hk.edu.hkmu.schoolinfo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -25,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
     private ListView listView;
     private  SimpleAdapter adapter;
+    public static final String EXTRA_MESSAGE = "URL_MESSAGE";
 
     ArrayAdapter<String> arrayAdapter;
 
@@ -38,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         EditText theFilter = (EditText) findViewById(R.id.searchFilter);
         listView = (ListView) findViewById(R.id.listview);
-
 
         JsonHandlerThread jsonHandlerThread = new JsonHandlerThread();
         jsonHandlerThread.start();
@@ -75,9 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
                 listView.setOnItemClickListener(
                         new AdapterView.OnItemClickListener() {
+
+                            public static final String EXTRA_MESSAGE = "URL_MESSAGE";
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 HashMap<String, String> school = SchoolInfo.schoolList.get(position);
                                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                                String url = school.get(SchoolInfo.WEBSITE);
 
                                 builder.setTitle(school.get(SchoolInfo.ENGNAME));
                                 builder.setMessage("School Number: " + school.get(SchoolInfo.SCHOOLNO) + "\n" +
@@ -88,7 +97,18 @@ public class MainActivity extends AppCompatActivity {
                                         "Finance Type: " + school.get(SchoolInfo.FINTYPE) + "\n" +
                                         "School Level: " + school.get(SchoolInfo.SCHOOLLV) + "\n" +
                                         "Telephone: " + school.get(SchoolInfo.TELEPHONE) + "\n" +
+                                        "Website: " + school.get(SchoolInfo.WEBSITE) + "\n" +
                                         "Religion: " + school.get(SchoolInfo.RELIGION));
+
+                                builder.setPositiveButton("Visit Website", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        String urlStr = url;
+                                        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+                                        intent.putExtra(EXTRA_MESSAGE, urlStr);
+                                        startActivity(intent);
+                                    }
+                                });
 
                                 AlertDialog alertDialog = builder.create();
                                 alertDialog.show();
@@ -134,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
                                 HashMap<String, String> school = SchoolInfo.schoolList.get(position);
                                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
+                                String url = school.get(SchoolInfo.WEBSITE);
+
                                 builder.setTitle(school.get(SchoolInfo.CHINAME));
                                 builder.setMessage("學模編號: " + school.get(SchoolInfo.SCHOOLNO) + "\n" +
                                         "中文類別: " + school.get(SchoolInfo.CHICATEGORY) + "\n" +
@@ -143,12 +165,22 @@ public class MainActivity extends AppCompatActivity {
                                         "資助種類: " + school.get(SchoolInfo.CHIFINTYPE) + "\n" +
                                         "學校類型: " + school.get(SchoolInfo.CHISCHOOLLV) + "\n" +
                                         "聯絡電話: " + school.get(SchoolInfo.CHITELEPHONE) + "\n" +
+                                        "學校網頁: " + school.get(SchoolInfo.CHIWEBSITE) + "\n" +
                                         "宗教: " + school.get(SchoolInfo.CHIRELIGION));
+
+                                builder.setPositiveButton("瀏覽學校網頁", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        String urlStr = url;
+                                        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+                                        intent.putExtra(EXTRA_MESSAGE, urlStr);
+                                        startActivity(intent);
+                                    }
+                                });
 
                                 AlertDialog alertDialog = builder.create();
                                 alertDialog.show();
                             }
-
                         }
                 );
             } catch (InterruptedException e) {
